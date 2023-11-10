@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { v4 as uuid } from "uuid"
 import { MdOutlineClose } from "react-icons/md"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../app/hooks"
 import { AnimatePresence, motion } from "framer-motion"
 import toast from "react-hot-toast"
 import { format } from "date-fns"
@@ -31,7 +31,7 @@ const dropIn = {
 }
 
 function TodoModal({ type, modalOpen, setModalOpen, todo }) {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [title, setTitle] = useState("")
   const [status, setStatus] = useState("incomplete")
 
@@ -95,11 +95,11 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
               <MdOutlineClose />
             </motion.div>
 
-            <form className={styles.form} onSubmit={e => handleSubmit(e)}>
+            <form data-testid="todoForm" className={styles.form} onSubmit={e => handleSubmit(e)}>
               <h1 className={styles.formTitle}>{type === "add" ? "Add" : "Update"} TODO</h1>
               <label htmlFor="title">
                 Title
-                <input type="text" id="title" value={title} onChange={e => setTitle(e.target.value)} />
+                <input aria-label="title" data-testid="new-title" type="text" id="title" placeholder="Add task" value={title} onChange={e => setTitle(e.target.value)} />
               </label>
               <label htmlFor="type">
                 Status
@@ -109,10 +109,10 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
                 </select>
               </label>
               <div className={styles.buttonContainer}>
-                <Button type="submit" variant="primary">
+                <Button data-testid="submit-btn" type="submit" variant="primary">
                   {type === "add" ? "Add Task" : "Update Task"}
                 </Button>
-                <Button variant="secondary" onClick={() => setModalOpen(false)}>
+                <Button data-testid="cancel-btn" variant="secondary" onClick={() => setModalOpen(false)}>
                   Cancel
                 </Button>
               </div>
